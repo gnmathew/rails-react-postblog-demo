@@ -1,6 +1,6 @@
 module Api
   module V1
-    class HomepageController < ApplicationController
+    class PostController < ApplicationController
       protect_from_forgery with: :null_session
       before_action :set_post, only: %i[update destroy]
 
@@ -21,12 +21,12 @@ module Api
       end
 
       def update
-        render json: @post
-        # if @post.update(post_params)
-        #   render json: Api::V1::PostSerializer.new(@post).serializable_hash
-        # else
-        #   render json: { error: @post.errors.messages }, status: 422
-        # end
+
+        if @post.update(post_params)
+          render json: Api::V1::PostSerializer.new(@post).serializable_hash
+        else
+          render json: { error: @post.errors.messages }, status: 422
+        end
       end
 
       def destroy
