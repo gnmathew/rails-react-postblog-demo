@@ -1,6 +1,6 @@
 module Api
   module V1
-    class PostSerializer
+    class PostsSerializer
       include FastJsonapi::ObjectSerializer
       attributes :title, :description
 
