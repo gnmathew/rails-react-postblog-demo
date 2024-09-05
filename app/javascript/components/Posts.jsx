@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react"
 import axios from "axios";
-import { PostForm } from "./PostForm";
+import { NewPostForm } from "./NewPostForm";
 import { PostItems } from "./PostItems";
 
 export default function Posts(){
@@ -11,11 +11,11 @@ export default function Posts(){
     axios.get('/api/v1/posts')
     .then( resp => { setPosts(resp.data.data)})
     .catch( resp => console.log(resp))
-  }, [posts.length ])
+  }, [])
 
   return (
     <>
-      <PostForm></PostForm>
+      <NewPostForm setPosts={setPosts}/>
       <div className="container my-4">
         <div className="row justify-content-center">
           <div className="col-md-8">
