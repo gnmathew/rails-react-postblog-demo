@@ -37,7 +37,7 @@ export function NewPostForm({ setPosts }){
           onChange={handleChange}
           placeholder="Title"
         />
-        <input
+        <textarea
           type="text"
           className="form-control w-100"
           name="description"

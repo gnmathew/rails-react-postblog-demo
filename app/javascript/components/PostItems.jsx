@@ -1,4 +1,5 @@
 import React from "react";
+import { EditPostModalForm} from "./EditPostModalForm"
 
 export function PostItems({ posts }) {
   if (posts.length === 0) {
@@ -16,7 +17,11 @@ export function PostItems({ posts }) {
           <td>{post.attributes.title}</td>
           <td>{post.attributes.description}</td>
           <td>
-            <button className="btn btn-secondary">Edit</button>
+            {/* -------------------------------modal---------------------- */}
+            <div>
+              <EditPostModalForm />
+            </div>
+            {/* -------------------------------modal---------------------- */}
           </td>
         </tr>
       ))}
