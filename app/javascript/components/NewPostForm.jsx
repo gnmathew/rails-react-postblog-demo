@@ -37,7 +37,7 @@ export function NewPostForm({ setPosts }){
           onChange={handleChange}
           placeholder="Title"
         />
-        <input
+        <textarea
           type="text"
           className="form-control w-100"
           name="description"
@@ -46,7 +46,7 @@ export function NewPostForm({ setPosts }){
           placeholder="Description"
         />
         <button type="submit" className="btn btn-primary w-100">
-          Post
+          Submit
         </button>
       </form>
     </div>

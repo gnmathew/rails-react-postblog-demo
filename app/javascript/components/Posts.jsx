@@ -29,7 +29,7 @@ export default function Posts(){
                 </tr>
               </thead>
               <tbody>
-                <PostItems posts={posts}/>
+                <PostItems posts={posts} setPosts={setPosts}/>
               </tbody>
             </table>
           </div>
