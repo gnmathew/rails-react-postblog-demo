@@ -1,7 +1,7 @@
 import React from "react";
 import { EditPostModalForm} from "./EditPostModalForm"
 
-export function PostItems({ posts, setPosts}) {
+export function PostItems({ posts, setPosts, handleDestroy}) {
 
   if (posts.length === 0) {
     return (
@@ -20,7 +20,7 @@ export function PostItems({ posts, setPosts}) {
           <td>
             {/* -------------------------------modal---------------------- */}
             <div>
-              <EditPostModalForm post={post.attributes} setPosts={setPosts} />
+              <EditPostModalForm post={post.attributes} setPosts={setPosts} handleDestroy={handleDestroy} />
             </div>
             {/* -------------------------------modal---------------------- */}
           </td>

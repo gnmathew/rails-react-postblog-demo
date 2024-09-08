@@ -3,7 +3,7 @@ import { useState } from "react"
 import { BsPencilFill, BsFillTrashFill } from "react-icons/bs";
 import axios from "axios";
 
-export function EditPostModalForm({ post, setPosts }) {
+export function EditPostModalForm({ post, setPosts, handleDestroy}) {
   const [editPost, setEditPost] = useState({ id: post.id, title: post.title, description: post.description })
 
   const handleChangePost = (e) => {
@@ -18,7 +18,7 @@ export function EditPostModalForm({ post, setPosts }) {
     axios.put(`/api/v1/posts/${editPost.id}`, { post: editPost } )
     .then( resp => {
       const updatedPost = resp.data.data;
-      
+
       console.log(updatedPost.id)
       setPosts((currentPosts) =>
         currentPosts.map((p) =>
@@ -30,12 +30,13 @@ export function EditPostModalForm({ post, setPosts }) {
 
   }
 
+
   const modalId = `editModal-${post.id}`;
 
   return(
     <>
       <BsPencilFill className="me-4" type="button" data-bs-toggle="modal" data-bs-target={`#${modalId}`}/>
-      <BsFillTrashFill className="me-2" style={{ color: 'red' }}/>
+      <BsFillTrashFill className="me-2" style={{ color: 'red' }} onClick={() => handleDestroy(post.id)}/>
 
       <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">

@@ -13,6 +13,17 @@ export default function Posts(){
     .catch( resp => console.log(resp))
   }, [])
 
+  const handleDestroy = (id) =>{
+
+    console.log('the att.id', id)
+    axios.delete(`/api/v1/posts/${id}`)
+    .then( () => {
+      const updatedPosts = posts.filter(post => post.id !== id);
+      setPosts([...updatedPosts]);
+    })
+    .catch(resp => { console.log(resp) });
+  }
+
   return (
     <>
       <NewPostForm setPosts={setPosts}/>
@@ -29,7 +40,7 @@ export default function Posts(){
                 </tr>
               </thead>
               <tbody>
-                <PostItems posts={posts} setPosts={setPosts}/>
+                <PostItems posts={posts} setPosts={setPosts} handleDestroy={handleDestroy}/>
               </tbody>
             </table>
           </div>
