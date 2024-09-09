@@ -1,7 +1,7 @@
 import React from "react";
 import { EditPostModalForm} from "./EditPostModalForm"
+export function PostItems({ posts, setPosts, handleDestroy}) {
 
-export function PostItems({ posts }) {
   if (posts.length === 0) {
     return (
       <tr>
@@ -13,13 +13,13 @@ export function PostItems({ posts }) {
   return (
     <>
       {posts.map(post => (
-        <tr key={post.attributes.id}>
+        <tr key={post.id}>
           <td>{post.attributes.title}</td>
           <td>{post.attributes.description}</td>
           <td>
             {/* -------------------------------modal---------------------- */}
             <div>
-              <EditPostModalForm />
+              <EditPostModalForm post={post.attributes} setPosts={setPosts} handleDestroy={handleDestroy} />
             </div>
             {/* -------------------------------modal---------------------- */}
           </td>

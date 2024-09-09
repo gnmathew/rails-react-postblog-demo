@@ -46,7 +46,7 @@ export function NewPostForm({ setPosts }){
           placeholder="Description"
         />
         <button type="submit" className="btn btn-primary w-100">
-          Post
+          Submit
         </button>
       </form>
     </div>
