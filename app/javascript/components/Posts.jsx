@@ -6,27 +6,51 @@ import { PostItems } from "./PostItems";
 
 export default function Posts(){
   const [posts, setPosts] = useState([])
+  const [newPost, setNewPost] = useState({ title: "", description: "" })
 
   useEffect(() =>{
     axios.get('/api/v1/posts')
     .then( resp => { setPosts(resp.data.data)})
-    .catch( resp => console.log(resp))
+    .catch( err => console.log(err))
   }, [])
 
-  const handleDestroy = (id) =>{
+  const handleChangeNew = (e) => {
+    e.preventDefault()
 
-    console.log('the att.id', id)
-    axios.delete(`/api/v1/posts/${id}`)
-    .then( () => {
-      const updatedPosts = posts.filter(post => post.id !== id);
-      setPosts([...updatedPosts]);
+    setNewPost({...newPost, [e.target.name]: e.target.value})
+  }
+
+  const submitNewForm = (e) => {
+    e.preventDefault()
+
+    const csrfToken =document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+    console.log('newPost:', newPost)
+
+    axios.post('/api/v1/posts', { post: newPost } )
+    .then( resp => {
+      setNewPost({title: "", description: ""});
+      setPosts( currentPosts => [...currentPosts, resp.data.data]);
     })
-    .catch(resp => { console.log(resp) });
+    .catch( resp => {console.log(resp)})
+  }
+
+  const handleDestroy = async (id) => {
+    try {
+      await axios.delete(`/api/v1/posts/${id}`);
+      setPosts(posts.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Error deleting the post:", error);
+    }
   }
 
   return (
     <>
-      <NewPostForm setPosts={setPosts}/>
+      <NewPostForm
+        handleChangeNew={handleChangeNew}
+        submitNewForm={submitNewForm}
+        newPost={newPost}
+      />
       <div className="container my-4">
         <div className="row justify-content-center">
           <div className="col-md-8">
@@ -40,7 +64,11 @@ export default function Posts(){
                 </tr>
               </thead>
               <tbody>
-                <PostItems posts={posts} setPosts={setPosts} handleDestroy={handleDestroy}/>
+                <PostItems
+                  posts={posts}
+                  setPosts={setPosts}
+                  handleDestroy={handleDestroy}
+                />
               </tbody>
             </table>
           </div>

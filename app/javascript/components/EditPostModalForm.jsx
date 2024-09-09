@@ -1,11 +1,12 @@
+import React from "react";
 import { useState } from "react"
-import { BsPencilFill, BsFillTrashFill } from "react-icons/bs";
 import axios from "axios";
+import { BsPencilFill } from "react-icons/bs";
 
-export function EditPostModalForm({ post, setPosts, handleDestroy}) {
-  const [editPost, setEditPost] = useState({ id: post.id, title: post.title, description: post.description })
+export function EditPostModalForm({ setPosts, id, attributes }) {
+  const [editPost, setEditPost] = useState({ title: attributes.title, description: attributes.description })
 
-  const handleChangePost = (e) => {
+  const handleChangeEdit = (e) => {
     e.preventDefault()
 
     setEditPost({...editPost, [e.target.name]: e.target.value})
@@ -14,11 +15,10 @@ export function EditPostModalForm({ post, setPosts, handleDestroy}) {
   const handleUpdate = (e) => {
     e.preventDefault()
 
-    axios.put(`/api/v1/posts/${editPost.id}`, { post: editPost } )
+    axios.put(`/api/v1/posts/${id}`, { post: editPost } )
     .then( resp => {
       const updatedPost = resp.data.data;
 
-      console.log(updatedPost.id)
       setPosts((currentPosts) =>
         currentPosts.map((p) =>
           p.id === updatedPost.id ? { ...p, attributes: { ...updatedPost.attributes } } : p
@@ -29,15 +29,11 @@ export function EditPostModalForm({ post, setPosts, handleDestroy}) {
 
   }
 
-
-  const modalId = `editModal-${post.id}`;
-
   return(
     <>
-      <BsPencilFill className="me-4" type="button" data-bs-toggle="modal" data-bs-target={`#${modalId}`}/>
-      <BsFillTrashFill className="me-2" style={{ color: 'red' }} onClick={() => handleDestroy(post.id)}/>
+      <BsPencilFill className="me-4" type="button" data-bs-toggle="modal" data-bs-target={`#editModal-${id}`}/>
 
-      <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id={`editModal-${id}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -46,24 +42,23 @@ export function EditPostModalForm({ post, setPosts, handleDestroy}) {
             </div>
             <div className="modal-body">
               <form>
-                <label>Title</label>
+                <label style={{ fontWeight: 'bold' }}>Title</label>
                 <input
                 className="form-control"
                 value={editPost.title}
                 name="title"
-                onChange={handleChangePost}
+                onChange={handleChangeEdit}
                 />
-                <label>Description</label>
+                <label style={{ fontWeight: 'bold' }}>Description</label>
                 <textarea
                 className="form-control"
                 value={editPost.description}
                 name="description"
-                onChange={handleChangePost}
+                onChange={handleChangeEdit}
                 />
-
               </form>
               <div className="modal-footer">
-                <button type="submit" onClick={handleUpdate} data-bs-dismiss="modal" className="btn btn-primary">Save changes</button>
+                <button type="button" onClick={handleUpdate} data-bs-dismiss="modal" className="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
