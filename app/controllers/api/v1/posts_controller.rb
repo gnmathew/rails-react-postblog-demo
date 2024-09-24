@@ -1,17 +1,17 @@
 module Api
   module V1
-    class PostsController < ApplicationController
+    class PostsController < AuthController
       protect_from_forgery with: :null_session
       before_action :set_post, only: %i[update destroy]
 
       def index
-        @posts = Post.all
+        @posts = @current_user.posts.all
 
         render json: Api::V1::PostsSerializer.new(@posts).serializable_hash
       end
 
       def create
-        post = Post.new(post_params)
+        post = @current_user.posts.build(post_params)
 
         if post.save
           render json: Api::V1::PostsSerializer.new(post).serializable_hash
@@ -40,7 +40,7 @@ module Api
       private
 
       def set_post
-        @post = Post.find(params[:id])
+        @post = @current_user.posts.find(params[:id])
       end
 
       def post_params
